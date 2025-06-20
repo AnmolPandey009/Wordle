@@ -21,23 +21,50 @@
         <source src="https://cdn.codechef.com/Learning/endfailsound.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-
-    <div class="container">
-        <h1>Guess the Word</h1>
-        <button id="start-button">Start Game</button>
-        <div id="word-container"></div>
-        <p>Chances left: <span id="chances">Click On Start Game!</span></p>
-        <p>Word Length: <span id="length">Click On Start Game!</span></p>
-        <div id="feedback"></div>
-        <div id="history-container">
-            <ul id="history-list"></ul>
-        </div>
-        <form id="guess-form">
-            <input type="text" id="guess-input" required>
-            <button id="submitButton" type="submit">Guess</button>
-        </form>
-        <button id="reload-button">Reload Game</button>
+  <div id="mainContainer">
+    <div class="leftContainer">
+      <h3>About This Game</h3>
+      <ol id="ruleslist">
+        <li>Main objective is to guess the word</li>
+        <li>If a letter turns to <span id="greenLetter">green</span> then it's correct & in the right place</li>
+        <li>If a letter turns to <span id="yellowLetter">yellow</span> then it's in the word but in the wrong place</li>
+        <li>If a letter turns to <span id="redLetter">red</span> then it does not exist in the word</li>
+        <li>Click reload to play again!</li>
+      </ol>
     </div>
+
+    <div class="centerContainer">
+      <h1>Guess the Word</h1>
+      <button id="start-button">Start Game</button>
+      <div id="word-container"></div>
+      <p>Chances left: <span id="chances">Click On Start Game!</span></p>
+      <p>Word Length: <span id="length">Click On Start Game!</span></p>
+      <div id="feedback"></div>
+      <div id="history-container">
+        <ul id="history-list"></ul>
+      </div>
+      <form id="guess-form">
+        <input type="text" id="guess-input" required />
+        <button id="submitButton" type="submit">Guess</button>
+      </form>
+      <button id="reload-button">Reload Game</button>
+    </div>
+
+    <div class="rightContainer">
+      <div id="letter-hints">
+        <div>
+          <h3>❌ Not in Word</h3>
+          <div id="notInWordContainer" class="letter-bar"></div>
+        </div>
+        <div>
+          <h3>⚠️ Wrong Position</h3>
+          <div id="wrongPositionContainer" class="letter-bar"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="wordle.js"></script>
 </body>
