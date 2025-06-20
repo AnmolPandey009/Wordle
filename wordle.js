@@ -36,7 +36,7 @@ $(document).ready(function () {
         const $resultDiv = $(
           '<div class="result-message">Congratulations! You guessed the word correctly.</div>'
         );
-        $resultDiv.hide().appendTo(".container").fadeIn(1000);
+        $resultDiv.hide().appendTo(".centerContainer").fadeIn(1000);
       } else {
         $endfailsound[0].play();
         const $resultDiv = $(
@@ -44,7 +44,7 @@ $(document).ready(function () {
             secretWord +
             ".</div>"
         );
-        $resultDiv.hide().appendTo(".container").fadeIn(1000);
+        $resultDiv.hide().appendTo(".centerContainer").fadeIn(1000);
       }
   
       $guessInput.prop("disabled", true);
@@ -59,7 +59,9 @@ $(document).ready(function () {
     let maxTries = "";
     let chancesLeft = maxTries;
     let guessedWords = [];
-  
+    let notInWordLetters = new Set();
+    let wrongPositionLetters = new Set();
+
     const $wordContainer = $("#word-container");
     const $guessForm = $("#guess-form");
     const $guessInput = $("#guess-input");
@@ -75,6 +77,7 @@ $(document).ready(function () {
       if (guess.length === secretWord.length) {
         const feedback = checkWordle(guess);
         guessedWords.push(guess);
+        updateLetterTracking(guess, feedback);
         renderHistory();
         chancesLeft--;
         $chancesSpan.text(chancesLeft);
@@ -101,7 +104,6 @@ $(document).ready(function () {
           guessLetters[letter] = (guessLetters[letter] || 0) + 1;
         }
       });
-  
       feedback.forEach((result, index) => {
         const letter = guess[index];
         if (
@@ -124,7 +126,7 @@ $(document).ready(function () {
         $wordContainer.append(`<span class="letter" id="letter-${i}">?</span>`);
       }
     }
-  
+    
     function renderHistory() {
       $historyList.empty();
       guessedWords.forEach((word, index) => {
@@ -153,8 +155,29 @@ $(document).ready(function () {
         $historyList.append(`<li class="${wordClass}">${wordHtml}</li>`);
       });
     }
-  
+    
+    function updateLetterTracking(guess, feedback) {
+      for (let i = 0; i < guess.length; i++) {
+      const letter = guess[i];
+      const type = feedback[i];
+      if (type === "W" && !notInWordLetters.has(letter)) {
+        notInWordLetters.add(letter);
+        $('#notInWordContainer').append(`<span>${letter}</span>`);
+      }
+
+      if (type === "E" && !wrongPositionLetters.has(letter)) {
+        wrongPositionLetters.add(letter);
+        $('#wrongPositionContainer').append(`<span>${letter}</span>`);
+      }
+     }
+    }
+
+
     function reloadPage() {
+      notInWordLetters.clear();
+      wrongPositionLetters.clear();
+      $('#notInWordContainer').empty();
+      $('#wrongPositionContainer').empty();
       location.reload();
     }
   
